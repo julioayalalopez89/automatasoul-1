@@ -16,7 +16,7 @@ const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 }) // valores normaliz
 
 //📦 useEffect para capturar el movimiento del mouse
 useEffect(() => {
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: MouseEvent) => {
     const x = e.clientX / window.innerWidth   // 0 a 1
     const y = e.clientY / window.innerHeight  // 0 a 1
     setMousePos({ x, y })
@@ -42,24 +42,17 @@ const autoRotationX = (mousePos.y - 0.5) * Math.PI // eje X (arriba/abajo), con 
     setRotationY(prev => prev + Math.PI / 4) // Rota 45 grados
   }
 
- const [animation, setAnimation] = useState<string | null>('Death')
-
- // Ejecuta la animación inicial solo una vez y la detiene después de 2 segundos (ajusta el tiempo según tu animación)
-useEffect(() => {
-  if (animation === 'Death') {
-    const timer = setTimeout(() => {
-      setAnimation(null) // Detiene la animación
-    }, 4000) // Cambia 2000 por la duración real de tu animación en milisegundos
-    return () => clearTimeout(timer)
-  }
-}, [animation])
+ const [animation, setAnimation] = useState<string | null>()
+const [triggerAnim, setTriggerAnim] = useState(0)
 
  
   const accionarAnimacion = () => {
   setAnimation('Dance') // Cambia 'Dance' por el nombre real de la animación si es diferente
+  setTriggerAnim(prev => prev + 1) // Cambia el trigger para reiniciar la animación
+
 }
   
-  //CAMBIAR EXPRESION
+ 
   
 
   
@@ -72,13 +65,13 @@ useEffect(() => {
     <div className="relative w-screen h-screen">
      
         <button   onClick={accionarRobocito} className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-blue-500 text-white px-6 py-3 rounded shadow-lg" >
-            Crear nuevo robot
+            GIRAR ROBOT
           </button>
 
          
         <Scene rotationY={rotationY}/>
         <Canvas>
-      <RobocitoModel animation={animation} position={[0, 0, 0]} scale={0.9}  rotation={[autoRotationX, rotationY + autoRotationY, 0]} /></Canvas>
+      <RobocitoModel animation={animation} triggerAnim={triggerAnim} position={[0, 0, 0]} scale={0.9}  rotation={[autoRotationX, rotationY + autoRotationY, 0]} /></Canvas>
         
      </div>
     </>
