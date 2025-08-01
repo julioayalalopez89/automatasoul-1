@@ -4,12 +4,40 @@ import { OrbitControls} from '@react-three/drei'
 
 import { RobocitoModel } from '../components/Robocito'
 
-import { Suspense } from 'react'
+import { Suspense} from 'react'
 import { FondoEscena } from '../components/Background.tsx'
 
-export default function Scene() {
+
+
+
+export default function Scene({ rotationY = 0 }: { rotationY: number }) {
+
   return (
-    
+
+
+    <Canvas
+      camera={{ position: [0, 2, 5], fov: 60 }}
+      style={{ width: '100vw', height: '100vh' }}
+    >
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[10, 10, 5]} />
+      <Suspense fallback={null}>
+        < FondoEscena  />
+        <RobocitoModel  position={[0, 0, 0]} scale={0.3} rotation={[0,  rotationY*2, 0]} />
+      </Suspense>
+      <OrbitControls
+        enableZoom={false}
+        enablePan={false}
+        maxAzimuthAngle={0.3}
+        minAzimuthAngle={-0.3}
+        maxPolarAngle={Math.PI / 2.2}
+        minPolarAngle={Math.PI / 2.8}
+      />
+    </Canvas>
+
+
+
+    /*
     <Canvas
       style={{
         position: 'fixed',
@@ -25,7 +53,7 @@ export default function Scene() {
       <ambientLight intensity={0.5} />
     <directionalLight position={[5, 5, 5]} />
       
-      {/* Múltiples roboces en la escena */}
+    //multiples roboces en la escena
       <RobocitoModel position={[0, 0, 0]} />
       <RobocitoModel position={[2, 0, -1]} />
       <RobocitoModel position={[-2, 0, 1]} />
@@ -37,6 +65,6 @@ export default function Scene() {
 
       
       <OrbitControls />
-    </Canvas>
+    </Canvas> */
   )
 }
