@@ -5,12 +5,86 @@ import { Canvas } from '@react-three/fiber'
 import './App.css'
 import { RobocitoModel } from './components/Robocito'
 //detectar movimientos del mouse
-import Scene  from './scenes/Scene'
+import Scene from './scenes/Scene'
 //<Scene />
 
+import { useRobotState } from './hooks/useRobotState'
+
+import LoginButton from './components/Auth/LoginButton.tsx'
+import { supabase } from './lib/supabaseClient.ts'
+import type { User } from '@supabase/supabase-js'
 
 function App() {
 
+
+ ////LOGIN/////
+const [user, setUser] = useState<User | null>(null)
+
+      useEffect(() => {
+  supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
+    setUser(data.user)
+  })
+          const { data: listener } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+            setUser(session?.user || null)
+          })
+
+          return () => listener?.subscription.unsubscribe()
+        }, [])
+
+ /* 
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null)
+    })
+
+    return () => listener?.subscription.unsubscribe()*/
+
+
+
+
+  // Usamos el hook personalizado para obtener y modificar el estado del robot
+  const [robot, setRobot] = useRobotState()
+  /**
+   * Función que simula jugar con el robot:
+   * Aumenta la felicidad, pero reduce energía.
+   */
+   const play = () => {
+     setRobot((prev: any) => ({
+      ...prev,
+      happiness: Math.min(100, prev.happiness + 10),
+      energy: Math.max(0, prev.energy - 5),
+    }))
+  }
+
+  /**
+   * Función que simula alimentar al robot:
+   * Reduce el hambre y mejora un poco la energía.
+   */
+  const feed = () => {
+    setRobot((prev: any) => ({
+      ...prev,
+      hunger: Math.max(0, prev.hunger - 15),
+      energy: Math.min(100, prev.energy + 5),
+    }))
+  }
+
+  /**
+   * Reinicia el robot eliminando el estado guardado.
+   */
+  const reset = () => {
+    localStorage.removeItem('robotState')
+    window.location.reload() // Refresca para aplicar el estado por defecto
+  }
+
+
+
+
+  
   // Añade useEffect y mousemove:
 const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 }) // valores normalizados
 
@@ -59,7 +133,40 @@ const [triggerAnim, setTriggerAnim] = useState(0)
 
   return (
     <>
+
+
+
+
+     <div>
+    {user ? (
+      <p>Hola, {user.email}</p>
+    ) : (
+      <LoginButton />
+    )}
+  </div>
+
+
     
+
+
+    
+     <div style={{ padding: '2rem' }}>
+      <h1>Hola, soy {robot.name} 🤖</h1>
+      <p>Felicidad: {robot.happiness}</p>
+      <p>Energía: {robot.energy}</p>
+      <p>Hambre: {robot.hunger}</p>
+
+      <div style={{ marginTop: '1rem' }}>
+        <button onClick={play}>🎮 Jugar</button>
+        <button onClick={feed}>🍔 Alimentar</button>
+        <button onClick={reset} style={{ marginLeft: '1rem' }}>🔄 Reiniciar</button>
+      </div>
+    </div>
+
+
+
+
+
     <button onClick={accionarAnimacion}>Bailar 🕺</button>
 
     <div className="relative w-screen h-screen">
