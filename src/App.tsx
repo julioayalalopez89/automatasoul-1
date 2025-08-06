@@ -10,26 +10,37 @@ import Scene from './scenes/Scene'
 
 import { useRobotState } from './hooks/useRobotState'
 
-import LoginButton from './components/Auth/LoginButton.tsx'
-import { supabase } from './lib/supabaseClient.ts'
-import type { User } from '@supabase/supabase-js'
+//LIB FOR LOGIN//
+import LoginButton from './components/Auth/LoginButton.tsx';
+//import LogoutButton from './components/Auth/LogoutButton.tsx';  // Asegúrate de tener el archivo correcto
+import { supabase } from './lib/supabaseClient.ts';
+import type { User } from '@supabase/supabase-js';
 
 function App() {
 
 
+const [user, setUser] = useState<User | null>(null);
  ////LOGIN/////
-const [user, setUser] = useState<User | null>(null)
 
-      useEffect(() => {
-  supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
-    setUser(data.user)
-  })
-          const { data: listener } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-            setUser(session?.user || null)
-          })
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
+      setUser(data.user);
+    });
 
-          return () => listener?.subscription.unsubscribe()
-        }, [])
+    const { data: listener } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+      setUser(session?.user || null);
+    });
+
+    return () => listener?.subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);  // Elimina al usuario del estado
+  };
+
+//////LOGOUT/////
+
 
  /* 
 
@@ -137,13 +148,17 @@ const [triggerAnim, setTriggerAnim] = useState(0)
 
 
 
-     <div>
-    {user ? (
-      <p>Hola, {user.email}</p>
-    ) : (
-      <LoginButton />
-    )}
-  </div>
+    <div>
+        {user ? (
+          <>
+            <p>Hola, {user.email}</p>
+            <button onClick={handleLogout}>Logout</button> {/* Botón de Logout */}
+          </>
+        ) : (
+          <LoginButton />
+        )}
+      </div>
+
 
 
     
