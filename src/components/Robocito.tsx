@@ -1,5 +1,5 @@
 import { useGLTF, useAnimations } from '@react-three/drei'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 //import { useEffect, useRef, useState } from 'react'
 
 export function RobocitoModel({ animation = null,triggerAnim = 0, ...props }: any) {

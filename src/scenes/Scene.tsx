@@ -7,7 +7,8 @@ import { RobocitoModel } from '../components/Robocito'
 import { Suspense} from 'react'
 import { FondoEscena } from '../components/Background.tsx'
 
-
+//myself
+import { ChipModel } from '../components/Chip.tsx'
 
 
 export default function Scene({ rotationY = 0 }: { rotationY: number }) {
@@ -23,7 +24,14 @@ export default function Scene({ rotationY = 0 }: { rotationY: number }) {
       <directionalLight position={[10, 10, 5]} />
       <Suspense fallback={null}>
         < FondoEscena  />
-        <RobocitoModel  position={[0, 0, 0]} scale={0.3} rotation={[0,  rotationY*2, 0]} />
+
+        <ChipModel
+          position={[0, 0, 0]}
+          scale={1}
+          rotation={[0, Math.PI / 4, 0]}
+        />
+
+        <RobocitoModel  position={[0, 0.1, 0]} scale={0.3} rotation={[0,  rotationY*2, 0]} />
       </Suspense>
       <OrbitControls
         enableZoom={false}

@@ -190,7 +190,6 @@ const [triggerAnim, setTriggerAnim] = useState(0)
             GIRAR ROBOT
           </button>
 
-         
         <Scene rotationY={rotationY}/>
         <Canvas>
       <RobocitoModel animation={animation} triggerAnim={triggerAnim} position={[0, 0, 0]} scale={0.9}  rotation={[autoRotationX, rotationY + autoRotationY, 0]} /></Canvas>
