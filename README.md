@@ -1,5 +1,25 @@
 # React + TypeScript + Vite
 
+## Configuración
+
+La app usa Supabase para el login. La URL y la anon key se leen de variables de entorno de Vite:
+
+| Variable | Descripción |
+|---|---|
+| `VITE_SUPABASE_URL` | URL del proyecto (`https://<ref>.supabase.co`) |
+| `VITE_SUPABASE_ANON_KEY` | Anon key pública del proyecto |
+
+Ambas están en Supabase → *Project Settings* → *API*.
+
+```bash
+cp .env.example .env   # o .env.local
+# rellena los dos valores
+npm install
+npm run dev
+```
+
+`.env` y `.env.local` están en `.gitignore`: no se suben al repo. Si falta alguna variable, la app lanza un error claro al arrancar indicando cuál.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
