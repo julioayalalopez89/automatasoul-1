@@ -1,7 +1,18 @@
-// src/lib/supabaseClient.js
+// src/lib/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://kijrrkmvdbouroxzkzrx.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpanJya212ZGJvdXJveHprenJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjMwMTQsImV4cCI6MjA2OTQ5OTAxNH0.XdqOHAhYYevD-TkreZCuSNJirSmv11mG5zbqRsgBkE8'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  const missing = [
+    !supabaseUrl && 'VITE_SUPABASE_URL',
+    !supabaseAnonKey && 'VITE_SUPABASE_ANON_KEY',
+  ].filter(Boolean).join(', ')
+  throw new Error(
+    `Falta configuración de Supabase: ${missing}. ` +
+    'Copia .env.example a .env (o .env.local) y rellena los valores del proyecto en Supabase.'
+  )
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
