@@ -1,74 +1,30 @@
-# React + TypeScript + Vite
+# AutomataSoul
 
-## Configuración
+Un robot que aprende a jugar videojuegos desde cero: ve la pantalla, controla teclado y mouse como un humano y sigue órdenes por voz.
 
-La app usa Supabase para el login. La URL y la anon key se leen de variables de entorno de Vite:
+> El proyecto se reinició en noviembre de 2026. El código anterior (app web en React + Three.js) sigue disponible en el historial de git.
 
-| Variable | Descripción |
-|---|---|
-| `VITE_SUPABASE_URL` | URL del proyecto (`https://<ref>.supabase.co`) |
-| `VITE_SUPABASE_ANON_KEY` | Anon key pública del proyecto |
+## Idea
 
-Ambas están en Supabase → *Project Settings* → *API*.
+- **Ojos:** captura de pantalla (y, más adelante, una cámara física apuntando al monitor).
+- **Cerebro:** un modelo de visión y lenguaje que decide la siguiente intención a partir de la imagen y la orden.
+- **Reflejos:** control rápido en Python (detección de objetos y reglas) para reaccionar en tiempo real.
+- **Manos:** entradas reales de teclado y mouse; después, actuadores físicos.
+- **Oídos:** reconocimiento de voz para darle órdenes como a un compañero.
 
-```bash
-cp .env.example .env   # o .env.local
-# rellena los dos valores
-npm install
-npm run dev
-```
+## Fases
 
-`.env` y `.env.local` están en `.gitignore`: no se suben al repo. Si falta alguna variable, la app lanza un error claro al arrancar indicando cuál.
+1. Ojos y manos: capturar la pantalla y controlar teclado y mouse desde código.
+2. Agente de escritorio por turnos: captura → decisión → acción.
+3. Primer juego simple aprendido desde cero (Chrome Dino, Flappy Bird, Tetris).
+4. Reflejos en tiempo real y un juego más complejo (Minecraft).
+5. Aprendizaje por imitación con partidas grabadas.
+6. Robot físico: cámara y "dedos" que juegan en una PC real.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Canal
 
-Currently, two official plugins are available:
+El proceso se documenta en video (en español): la IA falla, aprende y mejora.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Reglas
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Solo juegos de un jugador, servidores privados o juegos que permiten bots. Nada de juegos online con anti-cheat.
